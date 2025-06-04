@@ -1,0 +1,316 @@
+-- Table to store restaurant details
+CREATE TABLE Restaurant (
+    restaurantId NUMBER PRIMARY KEY,
+    restaurantName VARCHAR2(30),
+    city VARCHAR2(30),
+    email VARCHAR2(30),
+    mobile VARCHAR2(15),
+    rating NUMBER(9,2)
+);
+--------------------------------------------------------------------------------------
+
+-- Procedure to add a new restaurant
+CREATE OR REPLACE PROCEDURE AddRestaurant (
+    p_name   IN VARCHAR2,
+    p_city   IN VARCHAR2,
+    p_email  IN VARCHAR2,
+    p_mobile IN VARCHAR2,
+    p_rating IN NUMBER
+) AS
+    v_max_id NUMBER;
+BEGIN
+    SELECT COALESCE(MAX(restaurantId), 0) + 1 INTO v_max_id FROM Restaurant;
+
+    INSERT INTO Restaurant (restaurantId, restaurantName, city, email, mobile, rating) 
+    VALUES (v_max_id, p_name, p_city, p_email, p_mobile, p_rating);
+
+    DBMS_OUTPUT.PUT_LINE('Restaurant added successfully. ID: ' || v_max_id);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error while adding restaurant: ' || SQLERRM);
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Procedure to search a restaurant by ID and print its details
+CREATE OR REPLACE PROCEDURE SearchByRestaurantId (
+    p_id IN NUMBER
+) AS
+    v_name   Restaurant.restaurantName%TYPE;
+    v_city   Restaurant.city%TYPE;
+    v_email  Restaurant.email%TYPE;
+    v_mobile Restaurant.mobile%TYPE;
+    v_rating Restaurant.rating%TYPE;
+BEGIN
+    SELECT restaurantName, city, email, mobile, rating
+    INTO v_name, v_city, v_email, v_mobile, v_rating
+    FROM Restaurant
+    WHERE restaurantId = p_id;
+
+    DBMS_OUTPUT.PUT_LINE('--- Restaurant Details ---');
+    DBMS_OUTPUT.PUT_LINE('ID     : ' || p_id);
+    DBMS_OUTPUT.PUT_LINE('Name   : ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('City   : ' || v_city);
+    DBMS_OUTPUT.PUT_LINE('Email  : ' || v_email);
+    DBMS_OUTPUT.PUT_LINE('Mobile : ' || v_mobile);
+    DBMS_OUTPUT.PUT_LINE('Rating : ' || v_rating);
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No restaurant found with ID: ' || p_id);
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Procedure to update restaurant information
+CREATE OR REPLACE PROCEDURE UpdateRestaurant (
+    p_id     IN NUMBER,
+    p_name   IN VARCHAR2,
+    p_city   IN VARCHAR2,
+    p_email  IN VARCHAR2,
+    p_mobile IN VARCHAR2,
+    p_rating IN NUMBER
+) AS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM Restaurant WHERE restaurantId = p_id;
+
+    IF v_count = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('No restaurant found with ID: ' || p_id);
+        RETURN;
+    END IF;
+
+    UPDATE Restaurant
+    SET restaurantName = p_name,
+        city           = p_city,
+        email          = p_email,
+        mobile         = p_mobile,
+        rating         = p_rating
+    WHERE restaurantId = p_id;
+
+    DBMS_OUTPUT.PUT_LINE('Restaurant updated successfully for ID: ' || p_id);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error updating restaurant: ' || SQLERRM);
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Procedure to delete a restaurant by ID
+CREATE OR REPLACE PROCEDURE DeleteRestaurantById (
+    p_id IN NUMBER
+) AS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count FROM Restaurant WHERE restaurantId = p_id;
+
+    IF v_count = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('No restaurant found with ID: ' || p_id);
+        RETURN;
+    END IF;
+
+    DELETE FROM Restaurant WHERE restaurantId = p_id;
+
+    DBMS_OUTPUT.PUT_LINE('Restaurant deleted successfully with ID: ' || p_id);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error deleting restaurant: ' || SQLERRM);
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Anonymous block to print all restaurants
+DECLARE
+    CURSOR cur_restaurants IS
+        SELECT restaurantId, restaurantName, city, email, mobile, rating FROM Restaurant;
+
+    v_id     Restaurant.restaurantId%TYPE;
+    v_name   Restaurant.restaurantName%TYPE;
+    v_city   Restaurant.city%TYPE;
+    v_email  Restaurant.email%TYPE;
+    v_mobile Restaurant.mobile%TYPE;
+    v_rating Restaurant.rating%TYPE;
+BEGIN
+    OPEN cur_restaurants;
+    LOOP
+        FETCH cur_restaurants INTO v_id, v_name, v_city, v_email, v_mobile, v_rating;
+        EXIT WHEN cur_restaurants%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ', Name: ' || v_name || ', City: ' || v_city ||
+                             ', Email: ' || v_email || ', Mobile: ' || v_mobile || ', Rating: ' || v_rating);
+    END LOOP;
+    CLOSE cur_restaurants;
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Procedure to print all restaurants using a named procedure
+CREATE OR REPLACE PROCEDURE PrintAllRestaurants IS
+    CURSOR cur_restaurants IS
+        SELECT restaurantId, restaurantName, city, email, mobile, rating FROM Restaurant;
+
+    v_id     Restaurant.restaurantId%TYPE;
+    v_name   Restaurant.restaurantName%TYPE;
+    v_city   Restaurant.city%TYPE;
+    v_email  Restaurant.email%TYPE;
+    v_mobile Restaurant.mobile%TYPE;
+    v_rating Restaurant.rating%TYPE;
+BEGIN
+    OPEN cur_restaurants;
+    LOOP
+        FETCH cur_restaurants INTO v_id, v_name, v_city, v_email, v_mobile, v_rating;
+        EXIT WHEN cur_restaurants%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ', Name: ' || v_name || ', City: ' || v_city ||
+                             ', Email: ' || v_email || ', Mobile: ' || v_mobile || ', Rating: ' || v_rating);
+    END LOOP;
+    CLOSE cur_restaurants;
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- OUT mode procedure to return restaurant details
+CREATE OR REPLACE PROCEDURE OutSearchByRestaurantId (
+    p_id     IN  NUMBER,
+    p_name   OUT VARCHAR2,
+    p_city   OUT VARCHAR2,
+    p_email  OUT VARCHAR2,
+    p_mobile OUT VARCHAR2,
+    p_rating OUT NUMBER
+) AS
+BEGIN
+    SELECT restaurantName, city, email, mobile, rating
+    INTO p_name, p_city, p_email, p_mobile, p_rating
+    FROM Restaurant
+    WHERE restaurantId = p_id;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        p_name := NULL;
+        p_city := NULL;
+        p_email := NULL;
+        p_mobile := NULL;
+        p_rating := NULL;
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Function that uses OUT procedure and returns status
+CREATE OR REPLACE FUNCTION ExecuteSearchByRestaurantId (
+    p_id IN NUMBER
+) RETURN VARCHAR2 AS
+    v_name   VARCHAR2(30);
+    v_city   VARCHAR2(30);
+    v_email  VARCHAR2(30);
+    v_mobile VARCHAR2(15);
+    v_rating NUMBER(9,2);
+BEGIN
+    OutSearchByRestaurantId(p_id, v_name, v_city, v_email, v_mobile, v_rating);
+
+    IF v_name IS NULL THEN
+        RETURN 'No restaurant found with ID: ' || p_id;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('--- Restaurant Details ---');
+        DBMS_OUTPUT.PUT_LINE('ID     : ' || p_id);
+        DBMS_OUTPUT.PUT_LINE('Name   : ' || v_name);
+        DBMS_OUTPUT.PUT_LINE('City   : ' || v_city);
+        DBMS_OUTPUT.PUT_LINE('Email  : ' || v_email);
+        DBMS_OUTPUT.PUT_LINE('Mobile : ' || v_mobile);
+        DBMS_OUTPUT.PUT_LINE('Rating : ' || v_rating);
+        RETURN 'Restaurant found.';
+    END IF;
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Call function in anonymous block
+DECLARE
+    result VARCHAR2(100);
+BEGIN
+    result := ExecuteSearchByRestaurantId(1);
+    DBMS_OUTPUT.PUT_LINE(result);
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Trigger after INSERT
+CREATE OR REPLACE TRIGGER restaurant_insert_trigger
+AFTER INSERT ON Restaurant
+FOR EACH ROW
+DECLARE
+    v_rbid NUMBER;
+BEGIN
+    SELECT NVL(MAX(RbId), 0) + 1 INTO v_rbid FROM RestaurantBackup;
+
+    INSERT INTO RestaurantBackup (
+        RbId, restaurantId, restaurantName, city, email, mobile, rating, operation, activityOn
+    ) VALUES (
+        v_rbid,
+        :NEW.restaurantId,
+        :NEW.restaurantName,
+        :NEW.city,
+        :NEW.email,
+        :NEW.mobile,
+        :NEW.rating,
+        'INSERT',
+        SYSDATE
+    );
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Trigger after DELETE
+CREATE OR REPLACE TRIGGER restaurant_delete_trigger
+AFTER DELETE ON Restaurant
+FOR EACH ROW
+DECLARE
+    v_rbid NUMBER;
+BEGIN
+    SELECT NVL(MAX(RbId), 0) + 1 INTO v_rbid FROM RestaurantBackup;
+
+    INSERT INTO RestaurantBackup (
+        RbId, restaurantId, restaurantName, city, email, mobile, rating, operation, activityOn
+    ) VALUES (
+        v_rbid,
+        :OLD.restaurantId,
+        :OLD.restaurantName,
+        :OLD.city,
+        :OLD.email,
+        :OLD.mobile,
+        :OLD.rating,
+        'DELETE',
+        SYSDATE
+    );
+END;
+/
+--------------------------------------------------------------------------------------
+
+-- Trigger after UPDATE
+CREATE OR REPLACE TRIGGER restaurant_update_trigger
+AFTER UPDATE ON Restaurant
+FOR EACH ROW
+DECLARE
+    v_rbid NUMBER;
+BEGIN
+    SELECT NVL(MAX(RbId), 0) + 1 INTO v_rbid FROM RestaurantBackup;
+
+    INSERT INTO RestaurantBackup (
+        RbId, restaurantId, restaurantName, city, email, mobile, rating, operation, activityOn
+    ) VALUES (
+        v_rbid,
+        :OLD.restaurantId,
+        :OLD.restaurantName,
+        :OLD.city,
+        :OLD.email,
+        :OLD.mobile,
+        :OLD.rating,
+        'UPDATE',
+        SYSDATE
+    );
+END;
+/
