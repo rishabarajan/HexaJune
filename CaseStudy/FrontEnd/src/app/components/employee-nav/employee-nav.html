@@ -1,0 +1,14 @@
+<nav class="employee-nav">
+  <ul>
+    <li *ngFor="let item of navItems">
+      <a 
+        [routerLink]="item.path" 
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="material-icons">{{ item.icon }}</span>
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+</nav>

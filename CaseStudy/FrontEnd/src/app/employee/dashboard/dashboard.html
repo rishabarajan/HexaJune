@@ -1,0 +1,152 @@
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="greeting">Welcome, <span class="highlight">{{ userName }}</span></h1>
+      <p class="subtitle">Your asset management dashboard</p>
+    </div>
+    <div class="header-actions">
+      <button mat-icon-button [matMenuTriggerFor]="quickMenu" class="quick-action-btn">
+        <mat-icon>bolt</mat-icon>
+      </button>
+      <button mat-button class="logout-btn" (click)="logout()">Logout</button>
+      <mat-menu #quickMenu="matMenu" class="quick-action-menu">
+        @for (action of quickActions; track action.label) {
+          <button mat-menu-item [routerLink]="action.route">
+            <mat-icon>{{ action.icon }}</mat-icon>
+            <span>{{ action.label }}</span>
+          </button>
+        }
+      </mat-menu>
+    </div>
+  </header>
+
+  <!-- Stats Overview -->
+  <div class="stats-grid">
+    <mat-card class="stat-card" routerLink="/employee/allocated-assets">
+      <div class="stat-content">
+        <mat-icon class="stat-icon">devices</mat-icon>
+        <div class="stat-details">
+          <span class="stat-value">{{ allocatedAssets.length }}</span>
+          <span class="stat-label">Allocated Assets</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/employee/assets">
+      <div class="stat-content">
+        <mat-icon class="stat-icon">search</mat-icon>
+        <div class="stat-details">
+          <span class="stat-label">Browse</span>
+          <span class="stat-label">Available Assets</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/employee/request-asset">
+      <div class="stat-content">
+        <mat-icon class="stat-icon">add_circle</mat-icon>
+        <div class="stat-details">
+          <span class="stat-label">Request</span>
+          <span class="stat-label">New Asset</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-grid">
+    <mat-card class="content-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>devices_other</mat-icon>
+          My Assets
+        </mat-card-title>
+        <button mat-button color="primary" routerLink="/employee/allocated-assets" class="view-all">
+          VIEW ALL
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (isLoading) {
+          <div class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+        } @else {
+          @if (allocatedAssets.length > 0) {
+            <div class="asset-grid">
+              @for (asset of allocatedAssets.slice(0, 4); track asset.asset?.assetId) {
+                <mat-card class="asset-card">
+                  <div class="asset-icon" [matTooltip]="asset.asset?.assetCategory">
+                    <mat-icon>{{ getAssetIcon(asset.asset?.assetCategory) }}</mat-icon>
+                  </div>
+                  <div class="asset-details">
+                    <h3>{{ asset.asset?.assetName }}</h3>
+                    <p class="asset-id">ID: {{ asset.asset?.assetId }}</p>
+                    <p class="asset-date">Allocated: {{ asset.requestDate | date:'mediumDate' }}</p>
+                  </div>
+                  <!-- <button mat-icon-button class="asset-action" [routerLink]="['/employee/assets', asset.asset?.assetId]"> -->
+                    <!-- <mat-icon>chevron_right</mat-icon> -->
+                  <!-- </button> -->
+                </mat-card>
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <mat-icon>inventory_2</mat-icon>
+              <p>No assets currently allocated to you</p>
+              <button mat-raised-button color="primary" routerLink="/employee/request-asset">
+                REQUEST ASSET
+              </button>
+            </div>
+          }
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Activity -->
+  <mat-card class="activity-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>timeline</mat-icon>
+        Recent Activity
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-badge primary"></div>
+          <div class="timeline-content">
+            <div class="activity-message">
+              <strong>New asset allocated</strong>
+              <p>MacBook Pro (ID: LTP-1024) has been assigned to you</p>
+            </div>
+            <span class="timeline-date">Today, 10:30 AM</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-badge success"></div>
+          <div class="timeline-content">
+            <div class="activity-message">
+              <strong>Request approved</strong>
+              <p>Your request for a monitor has been approved</p>
+            </div>
+            <span class="timeline-date">Yesterday, 2:15 PM</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-badge info"></div>
+          <div class="timeline-content">
+            <div class="activity-message">
+              <strong>System update</strong>
+              <p>New asset categories have been added to the system</p>
+            </div>
+            <span class="timeline-date">Mar 15, 10:00 AM</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

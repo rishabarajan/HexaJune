@@ -1,0 +1,43 @@
+<div class="login-page">
+  <!-- Glassy Login Box -->
+  <div class="login-container glassy">
+    <h2>Asset Management Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-wrapper">
+          <i class="fa fa-user"></i>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username" 
+            placeholder="Enter username" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="fa fa-lock"></i>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Enter password" />
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+
+    <div class="form-footer">
+      <!-- Optional links can go here -->
+    </div>
+  </div>
+
+  <!-- Page Footer -->
+  <footer class="login-footer">
+    <p>© 2025 Asset Management System. All rights reserved.</p>
+  </footer>
+</div>

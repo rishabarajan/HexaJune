@@ -1,0 +1,73 @@
+<div class="asset-management">
+  <div class="header">
+    <h2>Asset Management</h2>
+    <div class="controls">
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" 
+               (input)="searchAssets()"
+               placeholder="Search assets...">
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+      
+      <div class="category-filter">
+        <label>Filter by category:</label>
+        <select (change)="filterByCategory($any($event.target).value)">
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading assets...</p>
+  </div>
+
+  <div class="asset-table" *ngIf="!isLoading">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Model</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let asset of filteredAssets; trackBy: trackByAssetId">
+          <td>{{ asset.asset_id }}</td>
+          <td>{{ asset.asset_name }}</td>
+          <td>
+            <span class="category-badge" [ngClass]="getCategoryClass(asset.asset_category)">
+              {{ asset.asset_category }}
+            </span>
+          </td>
+          <td>{{ asset.asset_model }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(asset.status)">
+              {{ asset.status || 'Available' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button mat-icon-button color="primary" [routerLink]="['/admin/assets/edit', asset.asset_id]">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteAsset(asset.asset_id)" [disabled]="asset.isDeleting">
+              <mat-icon *ngIf="!asset.isDeleting">delete</mat-icon>
+              <mat-spinner *ngIf="asset.isDeleting" diameter="20"></mat-spinner>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-results" *ngIf="!isLoading && filteredAssets.length === 0">
+      <mat-icon>info</mat-icon>
+      <p>No assets found matching your criteria</p>
+    </div>
+  </div>
+</div>

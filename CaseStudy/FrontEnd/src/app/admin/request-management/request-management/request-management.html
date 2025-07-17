@@ -1,0 +1,73 @@
+<div class="request-management">
+  <div class="header">
+    <h2>Request Management</h2>
+
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchRequests()"
+        placeholder="Search by employee or asset name..."
+      />
+      <mat-icon class="search-icon">search</mat-icon>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading requests...</p>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <div class="request-table" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Employee</th>
+          <th>Asset</th>
+          <th>Request Date</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let req of filteredData">
+          <td>{{ req.id }}</td>
+          <td>
+            {{ req.employee?.name }}
+            <span class="subtext">(ID: {{ req.employee?.id }})</span>
+          </td>
+          <td>
+            {{ req.asset?.name }}
+            <span class="subtext">(ID: {{ req.asset?.id }})</span>
+          </td>
+          <td>
+            {{ req.requestDate | date:'mediumDate' }}
+            <span class="subtext">{{ req.requestDate | date:'shortTime' }}</span>
+          </td>
+          <td><span class="type-badge">{{ req.requestType | titlecase }}</span></td>
+          <td><span class="status-badge" [ngClass]="req.status.toLowerCase()">{{ req.status }}</span></td>
+          <td class="actions">
+            <button mat-icon-button color="primary" (click)="approveRequest(req.id)" matTooltip="Approve">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="rejectRequest(req.id)" matTooltip="Reject">
+              <mat-icon>close</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-results" *ngIf="filteredData.length === 0">
+      <mat-icon>info</mat-icon>
+      <p>No requests found matching your search</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="allocated-assets-container">
+  <header class="page-header">
+    <h1>
+      <mat-icon>devices</mat-icon>
+      My Allocated Assets
+    </h1>
+    <button mat-raised-button color="primary" routerLink="/employee/request-asset">
+      <mat-icon>add</mat-icon>
+      REQUEST NEW ASSET
+    </button>
+  </header>
+
+  <div class="assets-grid">
+    @if (isLoading) {
+      <div class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    } @else {
+      @if (allocatedAssets.length > 0) {
+        @for (asset of allocatedAssets; track asset.assetId) {
+          <mat-card class="asset-card">
+            <div class="asset-header">
+              <div class="asset-icon" [matTooltip]="asset.assetType">
+                <mat-icon>{{ getAssetIcon(asset.asset?.assetCategory) }}</mat-icon>
+              </div>
+              <h2>{{ asset.assetName }}</h2>
+            </div>
+            
+            <div class="asset-details">
+              <div class="detail-row">
+  <span class="detail-label">Asset ID:</span>
+  <span class="detail-value">{{ asset.asset?.assetId }}</span>
+</div>
+
+<div class="detail-row">
+  <span class="detail-label">Asset Name:</span>
+  <span class="detail-value">{{ asset.asset?.assetName }}</span>
+</div>
+
+<div class="detail-row">
+  <span class="detail-label">Request Type:</span>
+  <span class="detail-value">{{ asset.requestType }}</span>
+</div>
+
+<div class="detail-row">
+  <span class="detail-label">Requested On:</span>
+  <span class="detail-value">{{ asset.requestDate | date:'mediumDate' }}</span>
+</div>
+<div class="detail-row">
+  <span class="detail-label">Category:</span>
+  <span class="detail-value">{{ asset.asset?.assetCategory | titlecase }}</span>
+</div>
+            </div>
+            
+            
+          </mat-card>
+        }
+      } @else {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">inventory_2</mat-icon>
+          <h3>No Assets Allocated</h3>
+          <p>You don't have any assets allocated to you currently</p>
+          <button mat-raised-button color="primary" routerLink="/employee/request-asset">
+            <mat-icon>add</mat-icon>
+            REQUEST NEW ASSET
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

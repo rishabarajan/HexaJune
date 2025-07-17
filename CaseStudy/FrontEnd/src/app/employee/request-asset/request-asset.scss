@@ -1,0 +1,210 @@
+/* General Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --dark-bg: #0f172a;
+  --card-bg: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-color: #10b981;
+  --error-color: #ef4444;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+/* Header Styles */
+.request-asset-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.page-header {
+  margin-bottom: 2.5rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.page-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-header mat-icon {
+  color: var(--primary-color);
+  transform: scale(1.2);
+}
+
+/* Card Styles */
+.request-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.request-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Form Field Styles */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  color: var(--primary-color);
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+.mat-form-field-label {
+  color: var(--text-secondary) !important;
+}
+
+.mat-input-element {
+  color: var(--text-primary) !important;
+  caret-color: var(--primary-color);
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--primary-color) !important;
+}
+
+.mat-form-field-suffix mat-icon {
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.mat-form-field.mat-focused .mat-form-field-suffix mat-icon {
+  color: var(--primary-color);
+}
+
+.mat-select-value {
+  color: var(--text-primary) !important;
+}
+
+.mat-select-arrow {
+  color: var(--text-secondary) !important;
+}
+
+.mat-option {
+  color: var(--text-primary) !important;
+  background: var(--card-bg) !important;
+}
+
+.mat-option:hover:not(.mat-option-disabled) {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Textarea Styles */
+textarea.mat-input-element {
+  min-height: 100px;
+  resize: vertical;
+  padding: 12px !important;
+}
+
+/* Button Styles */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+button[mat-raised-button] {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+button[mat-raised-button]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+button[mat-raised-button][disabled] {
+  opacity: 0.7;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ripple Effect */
+.mat-ripple-element {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+}

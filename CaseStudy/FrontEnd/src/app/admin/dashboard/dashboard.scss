@@ -1,0 +1,193 @@
+.dashboard-container {
+  background: 
+ linear-gradient(135deg, rgba(166, 181, 246, 0.8), rgba(118, 75, 162, 0.8)),
+  url('../../../assets/admin-dashb.jpg') no-repeat center center;
+
+  color: #e0f7fa;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 40px;
+position: relative;
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .welcome-message {
+    font-size: 1.1rem;
+    color: #cfd8dc;
+    margin-top: 10px;
+  }
+}
+.logout-button {
+  background-color: #4e6e81; // Subtle blue-gray
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 20px;
+  right: 40px;
+
+  &:hover {
+    background-color: #3b5663; // Darker on hover
+  }
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .metric-icon {
+    width: 52px;
+    height: 52px;
+    background-color: #1de9b6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+
+    i {
+      color: #000;
+      font-size: 28px;
+    }
+  }
+
+  .metric-content {
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #b2dfdb;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .metric-description {
+      font-size: 0.85rem;
+      color: #80cbc4;
+    }
+  }
+}
+
+.quick-actions .metric-icon {
+  background-color: #ffab91;
+}
+
+.quick-actions .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+
+  .action-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.recent-activity {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .activity-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .activity-icon {
+      margin-right: 14px;
+      font-size: 24px;
+      color: #26c6da;
+    }
+
+    .activity-details p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #e0f2f1;
+    }
+
+    .activity-time {
+      font-size: 0.75rem;
+      color: #b2dfdb;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+}

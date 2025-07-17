@@ -1,0 +1,84 @@
+<div class="request-asset-container">
+  <header class="page-header">
+    <h1>
+      <mat-icon>add_circle</mat-icon>
+      Request New Asset
+    </h1>
+    
+  </header>
+
+  <mat-card class="request-card">
+    <form #assetForm="ngForm" (ngSubmit)="submitRequest(assetForm)">
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Asset ID</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="requestData.assetId"
+            name="assetId"
+            required
+          />
+          <mat-icon matSuffix>tag</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Asset Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="requestData.assetName"
+            name="assetName"
+            required
+          />
+          <mat-icon matSuffix>badge</mat-icon>
+        </mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Request Date</mat-label>
+  <input
+    matInput
+    [matDatepicker]="picker"
+    [(ngModel)]="requestData.requestDate"
+    name="requestDate"
+    required
+  />
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Request Type</mat-label>
+          <mat-select [(ngModel)]="requestData.requestType" name="requestType" required>
+            <mat-option *ngFor="let type of requestTypes" [value]="type">{{ type }}</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>category</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="requestData.description"
+            name="description"
+            rows="4"
+            required
+          ></textarea>
+          <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+
+      
+      </div>
+
+      <div class="form-actions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="assetForm.invalid || isSubmitting"
+        >
+          <mat-icon>send</mat-icon>
+          {{ isSubmitting ? 'SUBMITTING...' : 'SUBMIT REQUEST' }}
+        </button>
+      </div> 
+    </form>
+  </mat-card>
+</div>

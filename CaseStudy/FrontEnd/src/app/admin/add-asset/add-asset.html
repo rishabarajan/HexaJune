@@ -1,0 +1,22 @@
+<div class="add-asset">
+  <h2>Add New Asset</h2>
+
+  <form (ngSubmit)="onSubmit()" #assetForm="ngForm">
+    <label>Asset Name:</label>
+    <input type="text" name="assetName" [(ngModel)]="assetData.assetName" required />
+
+    <label>Category:</label>
+    <input type="text" name="assetCategory" [(ngModel)]="assetData.assetCategory" required />
+
+    <label>Model:</label>
+    <input type="text" name="assetModel" [(ngModel)]="assetData.assetModel" required />
+
+    <label>Status:</label>
+    <select name="status" [(ngModel)]="assetData.status">
+      <option value="Available">Available</option>
+      <option value="Unavailable">Unavailable</option>
+    </select>
+
+    <button type="submit" [disabled]="!assetForm.form.valid">Add Asset</button>
+  </form>
+</div>

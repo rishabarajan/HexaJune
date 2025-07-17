@@ -1,0 +1,30 @@
+<div class="employee-management">
+  <h2>Employee Management</h2>
+  
+  <div class="search-bar">
+    <input [(ngModel)]="searchTerm" 
+           (input)="searchEmployees()"
+           placeholder="Search employees...">
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (emp of filteredEmployees; track $index) { <!-- Changed to track by index -->
+        <tr>
+          <td>{{ emp.employee_id }}</td>
+          <td>{{ emp.employee_name }}</td>
+          <td>{{ emp.user_name }}</td>
+          <td>{{ emp.email }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

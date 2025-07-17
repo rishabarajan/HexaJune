@@ -1,0 +1,119 @@
+.edit-asset-container {
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+mat-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  padding: 32px 24px;
+  transition: box-shadow 0.3s;
+}
+
+mat-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-form-field.mat-form-field {
+  font-size: 16px;
+}
+
+mat-label {
+  color: #555;
+}
+
+.mat-form-field-outline {
+  border-radius: 8px;
+}
+
+input[matInput],
+mat-select {
+  font-size: 15px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.button-group button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+button[mat-raised-button] {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button[mat-raised-button]:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  filter: brightness(0.97);
+}
+
+/* Spinner block */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #555;
+}
+
+.loading-spinner p {
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .edit-asset-container {
+    padding: 20px;
+  }
+
+  mat-card {
+    padding: 24px 16px;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-group button {
+    justify-content: center;
+  }
+}

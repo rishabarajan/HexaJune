@@ -1,0 +1,55 @@
+<div class="edit-asset-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Edit Asset (ID: {{assetId}})</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (ngSubmit)="updateAsset()" *ngIf="!isLoading; else loading">
+        <mat-form-field appearance="outline">
+          <mat-label>Asset Name</mat-label>
+          <input matInput [(ngModel)]="assetData.assetName" name="assetName" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="assetData.assetCategory" name="assetCategory" required>
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Model</mat-label>
+          <input matInput [(ngModel)]="assetData.assetModel" name="assetModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="assetData.status" name="status" required>
+            <mat-option *ngFor="let status of statuses" [value]="status">
+              {{status}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+            <mat-icon>save</mat-icon> Save Changes
+          </button>
+          <button mat-raised-button color="warn" type="button" routerLink="/admin/assets" [disabled]="isLoading">
+            <mat-icon>cancel</mat-icon> Cancel
+          </button>
+        </div>
+      </form>
+
+      <ng-template #loading>
+        <div class="loading-spinner">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p>Loading asset data...</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

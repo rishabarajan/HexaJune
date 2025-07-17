@@ -1,0 +1,63 @@
+<div class="view-assets-container">
+  <div class="view-assets-header">
+    <h2>Available Assets</h2>
+
+   <div class="filters">
+  <div class="search-box">
+    <mat-icon>search</mat-icon>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+      placeholder="Search assets..."
+    />
+  </div>
+<select class="status-dropdown" (change)="onStatusChange($any($event.target).value)">
+  <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+</select>
+
+  <select class="category-dropdown" (change)="onCategoryChange($any($event.target).value)">
+    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+  </select>
+</div>
+
+
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading assets...</p>
+  </div>
+
+  <div class="assets-grid" *ngIf="!isLoading && filteredAssets.length > 0">
+    <div class="asset-card" *ngFor="let asset of filteredAssets; trackBy: trackByAssetId">
+      <div class="asset-header">
+        <div class="asset-id">ID: {{ asset.asset_id }}</div>
+       <div class="status-badge" [ngClass]="getStatusClass(asset.status)">
+  {{ asset.status }}
+</div>
+      </div>
+
+      <div class="asset-body">
+        <h3>{{ asset.asset_name }}</h3>
+        <span class="category-badge" [ngClass]="getCategoryClass(asset.asset_category)">
+          {{ asset.asset_category }}
+        </span>
+      </div>
+
+      <div class="asset-actions">
+        <button
+          mat-button
+          color="primary"
+          [routerLink]="['/employee/request-asset']"
+          [queryParams]="{ assetId: asset.asset_id, assetName: asset.asset_name }"
+        >
+          Request Asset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && filteredAssets.length === 0">
+    <mat-icon class="empty-icon">inventory_2</mat-icon>
+    <p>No matching assets found.</p>
+  </div>
+</div>
